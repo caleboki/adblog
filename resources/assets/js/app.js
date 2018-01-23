@@ -8,11 +8,13 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.Slug = require('slug');
+Slug.defaults.mode = 'rfc3986';
+
 import Buefy from 'buefy'
 
 Vue.use(Buefy)
 
-require('./manage')
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -20,12 +22,9 @@ require('./manage')
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-//Vue.component('example-component', require('./components/ExampleComponent.vue'));
-/*if (document.getElementById('custom-data')) {
-  const el = document.getElementById('custom-data')
-  const p = JSON.parse(el.dataset.rp)
-  console.log(p)
-}*/
+Vue.component('slugWidget', require('./components/slugWidget.vue'));
+
+require('./manage')
 
  const app = new Vue({
     el: '#app',
@@ -61,6 +60,14 @@ require('./manage')
         },
         crudDescription: function(item) {
           return "Allow a User to " + item.toUpperCase() + " a " + app.resource.substr(0,1).toUpperCase() + app.resource.substr(1);
+        },
+        updateSlug: function(val) {
+          this.slug = val;
         }
-      }
+      },
+
+    data: {
+      slug: '',
+      title: '' //Binded to the title field in the post.create view
+    }
 });
